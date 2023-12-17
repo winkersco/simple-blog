@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\ArticleController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -21,4 +22,5 @@ Route::middleware(['auth'])->group(function () {
     Route::get('/', function () {
         return view('pages.dashboard.home');
     })->name('home');
+    Route::resource('articles', ArticleController::class);
 });
