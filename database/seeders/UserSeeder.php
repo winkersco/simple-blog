@@ -23,9 +23,5 @@ class UserSeeder extends Seeder
             'email' => 'admin@gmail.com',
         ]);
         $admin->assignRole($adminRole);
-        User::factory()->create([
-            'name' => 'User',
-            'email' => 'user@gmail.com',
-        ]);
     }
 }
