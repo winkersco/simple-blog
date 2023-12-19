@@ -2,6 +2,8 @@
 
 namespace App\Services;
 
+use App\Enums\PublicationStatus;
+use App\Models\Article;
 use App\Repositories\ArticleRepository;
 
 class ArticleService
@@ -13,32 +15,51 @@ class ArticleService
         $this->articleRepository = $articleRepository;
     }
 
-    public function getAll()
+    public function getAllPublished($perPage = 10)
     {
-        return $this->articleRepository->getAll();
+        return Article::published()->orderBy('publication_date', 'desc')->paginate($perPage);
     }
 
-    public function getById($id)
+    public function index()
     {
-        return $this->articleRepository->getById($id);
+        return auth()->user()->can('viewAny', Article::class)
+            ? $this->articleRepository->getAll()
+            : $this->articleRepository->getByAuthor(auth()->user()->id);
     }
-
-    public function create(array $data)
+    public function store(array $data)
     {
+        $this->checkPublishAccess($data);
         $user = auth()->user();
         $data['author_id'] = $user->id;
-        return $this->articleRepository->create($data);
+        $this->articleRepository->create($data);
     }
 
     public function update(int $id, array $data)
     {
+        $this->checkPublishAccess($data);
         $user = auth()->user();
         $data['author_id'] = $user->id;
-        return $this->articleRepository->update($id, $data);
+        $this->articleRepository->update($id, $data);
     }
 
-    public function delete($id)
+    public function destroy($id)
     {
-        return $this->articleRepository->delete($id);
+        $this->articleRepository->delete($id);
+    }
+
+    public function publish($id)
+    {
+        $data = [
+            'publication_status' => PublicationStatus::PUBLISH->value,
+            'publication_date' => now()
+        ];
+        $this->articleRepository->update($id, $data);
+    }
+
+    protected function checkPublishAccess(array &$data)
+    {
+        if (!auth()->user()->can('publish', Article::class)) {
+            unset($data['publication_date'], $data['publication_status']);
+        }
     }
 }

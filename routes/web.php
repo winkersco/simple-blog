@@ -23,4 +23,7 @@ Route::middleware(['auth'])->group(function () {
         return view('pages.dashboard.home');
     })->name('home');
     Route::resource('articles', ArticleController::class);
+    Route::prefix('articles')->name('articles.')->group(function () {
+        Route::post('/{article}/publish', [ArticleController::class, 'publish'])->name('publish');
+    });
 });

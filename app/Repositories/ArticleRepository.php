@@ -12,6 +12,10 @@ class ArticleRepository
         return $articles;
     }
 
+    public function getByAuthor($authorId)
+    {
+        return Article::where('author_id', $authorId)->get();
+    }
     public function getById($id)
     {
         $article = Article::findOrFail($id);
@@ -26,15 +30,11 @@ class ArticleRepository
 
     public function update(int $id, array $data)
     {
-        $article = Article::findOrFail($id);
-        $article->update($data);
-        return $article;
+        return Article::where('id', $id)->update($data);
     }
 
     public function delete($id)
     {
-        $article = Article::findOrFail($id);
-        $article->delete();
-        return $article;
+        return Article::where('id', $id)->delete();
     }
 }

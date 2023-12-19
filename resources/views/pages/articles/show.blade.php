@@ -30,10 +30,10 @@
                 Author: {{ $article->author->name }}
             </p>
             <p class="lead">
-                Status: 
-                <span class="badge {{ $article->publication_status == App\Enums\PublicationStatus::PUBLISH ? 'bg-success' : 'bg-secondary' }}">{{ $article->publication_status->name }}</span>
+                Status:
+                <span class="badge {{ $article->isPublished() ? 'bg-success' : 'bg-secondary' }}">{{ $article->publication_status->name }}</span>
             </p>
-            @if ($article->publication_status == App\Enums\PublicationStatus::PUBLISH)
+            @if ($article->isPublished())
                 <p class="lead">
                     Publication Date: {{ $article->publication_date }}
                 </p>

@@ -10,72 +10,59 @@ use App\Services\ArticleService;
 class ArticleController extends Controller
 {
     protected $articleService;
-    
+
     public function __construct(ArticleService $articleService)
     {
         $this->articleService = $articleService;
     }
 
-    /**
-     * Display a listing of the resource.
-     */
     public function index()
     {
-        $articles = $this->articleService->getAll();
+        $articles = $this->articleService->index();
         return view('pages.articles.index', ['articles' => $articles]);
     }
 
-    /**
-     * Show the form for creating a new resource.
-     */
     public function create()
     {
         return view('pages.articles.create');
     }
 
-    /**
-     * Store a newly created resource in storage.
-     */
     public function store(StoreArticleRequest $request)
     {
-        $article = $this->articleService->create($request->validated());
-        return redirect()->route('articles.show', $article->id);
+        $this->articleService->store($request->validated());
+        return redirect()->route('articles.index');
     }
 
-    /**
-     * Display the specified resource.
-     */
-    public function show(int $id)
+    public function show(Article $article)
     {
-        $article = $this->articleService->getById($id);
+        $this->authorize('view', $article);
         return view('pages.articles.show', ['article' => $article]);
     }
 
-    /**
-     * Show the form for editing the specified resource.
-     */
-    public function edit(int $id)
+    public function edit(Article $article)
     {
-        $article = $this->articleService->getById($id);
+        $this->authorize('update', $article);
         return view('pages.articles.edit', ['article' => $article]);
-
     }
 
-    /**
-     * Update the specified resource in storage.
-     */
-    public function update(UpdateArticleRequest $request, int $id)
+    public function update(UpdateArticleRequest $request, Article $article)
     {
-        $article = $this->articleService->update($id, $request->validated());
+        $this->authorize('update', $article);
+        $this->articleService->update($article->id, $request->validated());
         return redirect()->route('articles.show', $article->id);
     }
 
-    /**
-     * Remove the specified resource from storage.
-     */
-    public function destroy(int $id)
+    public function destroy(Article $article)
     {
-        $this->articleService->delete($id);
+        $this->authorize('delete', $article);
+        $this->articleService->destroy($article->id);
+        return redirect()->route('articles.index');
+    }
+
+    public function publish(Article $article)
+    {
+        $this->authorize('publish', $article);
+        $this->articleService->publish($article->id);
         return redirect()->route('articles.index');
     }
 }

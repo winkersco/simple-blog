@@ -3,6 +3,7 @@
 namespace App\Models;
 
 use App\Enums\PublicationStatus;
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
@@ -16,6 +17,16 @@ class Article extends Model
     protected $casts = [
         'publication_status' => PublicationStatus::class,
     ];
+
+    public function isPublished()
+    {
+        return $this->publication_status == PublicationStatus::PUBLISH;
+    }
+
+    public function scopePublished(Builder $query)
+    {
+        return $query->where('publication_status', PublicationStatus::PUBLISH->value);
+    }
 
     public function author()
     {

@@ -2,7 +2,9 @@
 
 namespace App\Http\Requests;
 
+use App\Enums\PublicationStatus;
 use Illuminate\Foundation\Http\FormRequest;
+use Illuminate\Validation\Rule;
 
 class StoreArticleRequest extends FormRequest
 {
@@ -22,8 +24,16 @@ class StoreArticleRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'title' => 'required|max:255',
-            'content' => 'required',
+            'title' => ['required', 'max:255'],
+            'content' => ['required'],
+            'publication_date' => [
+                'nullable',
+                'date',
+            ],
+            'publication_status' => [
+                'nullable',
+                Rule::in(PublicationStatus::values()),
+            ],
         ];
     }
 }
