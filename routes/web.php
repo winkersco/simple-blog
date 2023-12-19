@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\ArticleController;
+use App\Http\Controllers\HomeController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -19,9 +20,7 @@ use Illuminate\Support\Facades\Route;
 // });
 
 Route::middleware(['auth'])->group(function () {
-    Route::get('/', function () {
-        return view('pages.dashboard.home');
-    })->name('home');
+    Route::get('/', HomeController::class)->name('home');
     Route::resource('articles', ArticleController::class);
     Route::prefix('articles')->name('articles.')->group(function () {
         Route::post('/{article}/publish', [ArticleController::class, 'publish'])->name('publish');
