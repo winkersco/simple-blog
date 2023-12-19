@@ -12,6 +12,11 @@ class ArticleRepository
         return $articles;
     }
 
+    public function getTrashed()
+    {
+        return Article::onlyTrashed()->get();
+    }
+
     public function getByAuthor($authorId)
     {
         return Article::where('author_id', $authorId)->get();
@@ -36,5 +41,10 @@ class ArticleRepository
     public function delete($id)
     {
         return Article::where('id', $id)->delete();
+    }
+
+    public function restore($id)
+    {
+        return Article::withTrashed()->where('id', $id)->restore();
     }
 }

@@ -72,7 +72,10 @@ class ArticlePolicy
      */
     public function restore(User $user, Article $article): bool
     {
-        //
+        if ($user->can('article-restore')) {
+            return true;
+        }
+        return false;
     }
 
     /**
@@ -89,6 +92,17 @@ class ArticlePolicy
     public function publish(User $user): bool
     {
         if ($user->can('article-publish')) {
+            return true;
+        }
+        return false;
+    }
+
+        /**
+     * Determine whether the user can view trashed models.
+     */
+    public function trash(User $user): bool
+    {
+        if ($user->can('article-trash')) {
             return true;
         }
         return false;

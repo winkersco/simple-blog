@@ -65,4 +65,18 @@ class ArticleController extends Controller
         $this->articleService->publish($article->id);
         return redirect()->route('articles.index');
     }
+
+    public function trash()
+    {
+        $this->authorize('trash', Article::class);
+        $articles = $this->articleService->trash();
+        return view('pages.articles.trash', ['articles' => $articles]);
+    }
+
+    public function restore(Article $article)
+    {
+        $this->authorize('restore', $article);
+        $this->articleService->restore($article->id);
+        return redirect()->route('articles.index');
+    }
 }

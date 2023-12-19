@@ -21,8 +21,10 @@ use Illuminate\Support\Facades\Route;
 
 Route::middleware(['auth'])->group(function () {
     Route::get('/', HomeController::class)->name('home');
-    Route::resource('articles', ArticleController::class);
     Route::prefix('articles')->name('articles.')->group(function () {
-        Route::post('/{article}/publish', [ArticleController::class, 'publish'])->name('publish');
+        Route::get('trash', [ArticleController::class, 'trash'])->name('trash');
+        Route::post('{article}/restore', [ArticleController::class, 'restore'])->withTrashed()->name('restore');
+        Route::post('{article}/publish', [ArticleController::class, 'publish'])->name('publish');
     });
+    Route::resource('articles', ArticleController::class);
 });

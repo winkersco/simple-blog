@@ -56,6 +56,16 @@ class ArticleService
         $this->articleRepository->update($id, $data);
     }
 
+    public function trash()
+    {
+        return $this->articleRepository->getTrashed();
+    }
+
+    public function restore($id)
+    {
+        return $this->articleRepository->restore($id);
+    }
+
     protected function checkPublishAccess(array &$data)
     {
         if (!auth()->user()->can('publish', Article::class)) {

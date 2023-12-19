@@ -16,5 +16,13 @@ return [
     [
         'name' => 'article-delete',
         'description' => 'delete a specific article'
-    ]
+    ],
+    [
+        'name' => 'article-trash',
+        'description' => 'view trashed articles'
+    ],
+    [
+        'name' => 'article-restore',
+        'description' => 'restore a specific trashed article'
+    ],
 ];
