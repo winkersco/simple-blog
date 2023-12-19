@@ -15,9 +15,9 @@ class ArticleService
         $this->articleRepository = $articleRepository;
     }
 
-    public function getAllPublished($perPage = 10)
+    public function getPublished($perPage = 10)
     {
-        return Article::published()->orderBy('publication_date', 'desc')->paginate($perPage);
+        return $this->articleRepository->getPublished($perPage);
     }
 
     public function index()

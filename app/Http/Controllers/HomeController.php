@@ -18,7 +18,7 @@ class HomeController extends Controller
      */
     public function __invoke()
     {
-        $articles = $this->articleService->getAllPublished();
+        $articles = $this->articleService->getPublished();
         return view('pages.home', ['articles' => $articles]);
     }
 }

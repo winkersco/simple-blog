@@ -8,8 +8,12 @@ class ArticleRepository
 {
     public function getAll()
     {
-        $articles = Article::all();
-        return $articles;
+        return Article::all();
+    }
+
+    public function getPublished($perPage = 10)
+    {
+        return Article::published()->orderBy('publication_date', 'desc')->paginate($perPage);
     }
 
     public function getTrashed()
@@ -23,14 +27,12 @@ class ArticleRepository
     }
     public function getById($id)
     {
-        $article = Article::findOrFail($id);
-        return $article;
+        return Article::findOrFail($id);
     }
 
     public function create(array $data)
     {
-        $article = Article::create($data);
-        return $article;
+        return Article::create($data);
     }
 
     public function update(int $id, array $data)
