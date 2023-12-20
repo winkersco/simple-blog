@@ -16,7 +16,9 @@
                 <nav class="sb-sidenav-menu-nested nav">
                     <a class="nav-link" href="{{ route('articles.create') }}">Create Article</a>
                     <a class="nav-link" href="{{ route('articles.index') }}">List Articles</a>
-                    <a class="nav-link" href="{{ route('articles.trash') }}">List Trashed Articles</a>
+                    @can('trash', \App\Models\Article::class)
+                        <a class="nav-link" href="{{ route('articles.trash') }}">List Trashed Articles</a>
+                    @endcan
                 </nav>
             </div>
         </div>
