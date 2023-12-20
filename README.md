@@ -42,7 +42,7 @@ Make sure you have Docker and Docker Compose installed on your machine.
    ```bash
    docker compose exec app php artisan migrate --seed
    ```
-7. Now, open your browser and navigate to [http://localhost](http://localhost).
+7. Now, open your browser and navigate to [http://localhost:8080](http://localhost:8080).
 
 ## Default Credentials
 
