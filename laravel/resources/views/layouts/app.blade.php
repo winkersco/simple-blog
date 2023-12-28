@@ -11,7 +11,7 @@
     @yield('pre-styles')
     <link href="{{ asset('assets/css/styles.css') }}" rel="stylesheet" />
     @yield('styles')
-    <script src="https://use.fontawesome.com/releases/v6.3.0/js/all.js" crossorigin="anonymous"></script>
+    <script defer src="https://use.fontawesome.com/releases/v5.15.4/js/all.js" integrity="sha384-rOA1PnstxnOBLzCLMcre8ybwbTmemjzdNlILg8O7z1lUkLXozs4DHonlDtnE7fpc" crossorigin="anonymous"></script>
     @yield('pre-scripts')
 </head>
 
@@ -26,6 +26,8 @@
                 <div class="container-fluid px-4">
                     @yield('header')
                     @yield('breadcrumb')
+                    @include('inc.messages')
+                    @include('inc.errors')
                     @yield('content')
                 </div>
             </main>

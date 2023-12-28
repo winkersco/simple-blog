@@ -33,7 +33,10 @@ class ArticleController extends Controller
     public function store(StoreArticleRequest $request)
     {
         $this->articleService->store($request->validated());
-        return redirect()->route('articles.index');
+        return redirect()->route('articles.index')->with('message', [
+            'type' =>'success',
+            'text' => 'Article created successfully.'
+        ]);
     }
 
     public function show(Article $article)
@@ -52,21 +55,30 @@ class ArticleController extends Controller
     {
         $this->authorize('update', $article);
         $this->articleService->update($article->id, $request->validated());
-        return redirect()->route('articles.show', $article->id);
+        return redirect()->route('articles.show', $article->id)->with('message', [
+            'type' =>'success',
+            'text' => 'Article updated successfully.'
+        ]);
     }
 
     public function destroy(Article $article)
     {
         $this->authorize('delete', $article);
         $this->articleService->destroy($article->id);
-        return redirect()->route('articles.index');
+        return redirect()->route('articles.index')->with('message', [
+            'type' =>'success',
+            'text' => 'Article deleted successfully.'
+        ]);
     }
 
     public function publish(Article $article)
     {
         $this->authorize('publish', $article);
         $this->articleService->publish($article->id);
-        return redirect()->route('articles.index');
+        return redirect()->route('articles.index')->with('message', [
+            'type' =>'success',
+            'text' => 'Article published successfully.'
+        ]);
     }
 
     public function trash(Request $request)
@@ -82,6 +94,9 @@ class ArticleController extends Controller
     {
         $this->authorize('restore', $article);
         $this->articleService->restore($article->id);
-        return redirect()->route('articles.index');
+        return redirect()->route('articles.index')->with('message', [
+            'type' =>'success',
+            'text' => 'Article restored successfully.'
+        ]);
     }
 }
