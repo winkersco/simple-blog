@@ -38,11 +38,16 @@ Make sure you have Docker and Docker Compose installed on your machine.
    docker compose exec app php artisan key:generate
    ```
 
-6. Run migrations and seeders:
+6. You can also run tests for your application (optional):
+   ```bash
+   docker compose exec app php artisan test
+   ```
+
+7. Run migrations and seeders:
    ```bash
    docker compose exec app php artisan migrate --seed
    ```
-7. Now, open your browser and navigate to [http://localhost:8080](http://localhost:8080).
+8. Now, open your browser and navigate to [http://localhost:8080](http://localhost:8080).
 
 ## Default Credentials
 
