@@ -30,7 +30,7 @@ class ArticleFactory extends Factory
             'title' => $this->faker->sentence,
             'content' => $this->faker->paragraph,
             'author_id' => null,
-            'publication_date' => now(),
+            'publication_date' => $this->faker->dateTimeBetween('-1 week', '-1 days'),
             'publication_status' => PublicationStatus::PUBLISH->value,
         ];
     }
