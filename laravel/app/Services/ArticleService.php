@@ -20,18 +20,19 @@ class ArticleService
         return $this->articleRepository->getPublished($perPage);
     }
 
-    public function index()
+    public function index($search='', $perPage = 10)
     {
         return auth()->user()->can('viewAny', Article::class)
-            ? $this->articleRepository->getAll()
-            : $this->articleRepository->getByAuthor(auth()->user()->id);
+            ? $this->articleRepository->getAll($search, $perPage)
+            : $this->articleRepository->getByAuthor(auth()->user()->id, $search, $perPage);
     }
+
     public function store(array $data)
     {
         $this->checkPublishAccess($data);
         $user = auth()->user();
         $data['author_id'] = $user->id;
-        $this->articleRepository->create($data);
+        return $this->articleRepository->create($data);
     }
 
     public function update(int $id, array $data)
@@ -39,12 +40,12 @@ class ArticleService
         $this->checkPublishAccess($data);
         $user = auth()->user();
         $data['author_id'] = $user->id;
-        $this->articleRepository->update($id, $data);
+        return $this->articleRepository->update($id, $data);
     }
 
     public function destroy($id)
     {
-        $this->articleRepository->delete($id);
+        return $this->articleRepository->delete($id);
     }
 
     public function publish($id)
@@ -53,12 +54,12 @@ class ArticleService
             'publication_status' => PublicationStatus::PUBLISH->value,
             'publication_date' => now()
         ];
-        $this->articleRepository->update($id, $data);
+        return $this->articleRepository->update($id, $data);
     }
 
-    public function trash()
+    public function trash($search='', $perPage = 10)
     {
-        return $this->articleRepository->getTrashed();
+        return $this->articleRepository->getTrashed($search, $perPage);
     }
 
     public function restore($id)

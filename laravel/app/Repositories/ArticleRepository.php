@@ -6,24 +6,24 @@ use App\Models\Article;
 
 class ArticleRepository
 {
-    public function getAll()
+    public function getAll($search='', $perPage = 10)
     {
-        return Article::all();
+        return Article::search($search)->paginate($perPage);
     }
 
     public function getPublished($perPage = 10)
     {
-        return Article::published()->orderBy('publication_date', 'desc')->paginate($perPage);
+        return Article::published()->orderBy('publication_date', 'desc')->latest()->paginate($perPage);
     }
 
-    public function getTrashed()
+    public function getTrashed($search='', $perPage = 10)
     {
-        return Article::onlyTrashed()->get();
+        return Article::onlyTrashed()->search($search)->paginate($perPage);
     }
 
-    public function getByAuthor($authorId)
+    public function getByAuthor($authorId, $search='', $perPage = 10)
     {
-        return Article::where('author_id', $authorId)->get();
+        return Article::where('author_id', $authorId)->search($search)->paginate($perPage);
     }
     public function getById($id)
     {

@@ -6,6 +6,7 @@ use App\Http\Requests\StoreArticleRequest;
 use App\Http\Requests\UpdateArticleRequest;
 use App\Models\Article;
 use App\Services\ArticleService;
+use Illuminate\Http\Request;
 
 class ArticleController extends Controller
 {
@@ -16,9 +17,11 @@ class ArticleController extends Controller
         $this->articleService = $articleService;
     }
 
-    public function index()
+    public function index(Request $request)
     {
-        $articles = $this->articleService->index();
+        $search = $request->get('search', '');
+        $perPage = $request->get('per_page', 10);
+        $articles = $this->articleService->index($search, $perPage);
         return view('pages.articles.index', ['articles' => $articles]);
     }
 
@@ -66,10 +69,12 @@ class ArticleController extends Controller
         return redirect()->route('articles.index');
     }
 
-    public function trash()
+    public function trash(Request $request)
     {
         $this->authorize('trash', Article::class);
-        $articles = $this->articleService->trash();
+        $search = $request->get('search', '');
+        $perPage = $request->get('per_page', 10);
+        $articles = $this->articleService->trash($search, $perPage);
         return view('pages.articles.trash', ['articles' => $articles]);
     }
 

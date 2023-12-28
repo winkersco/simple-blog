@@ -1,25 +1,5 @@
 @extends('layouts.app')
 
-@section('pre-styles')
-    <link href="https://cdn.jsdelivr.net/npm/simple-datatables@7.1.2/dist/style.min.css" rel="stylesheet" />
-@endsection
-
-@section('scripts')
-    <script src="https://cdn.jsdelivr.net/npm/simple-datatables@7.1.2/dist/umd/simple-datatables.min.js"
-        crossorigin="anonymous"></script>
-    <script>
-        window.addEventListener('DOMContentLoaded', event => {
-            // Simple-DataTables
-            // https://github.com/fiduswriter/Simple-DataTables/wiki
-
-            const datatablesSimple = document.getElementById('datatablesSimple');
-            if (datatablesSimple) {
-                new simpleDatatables.DataTable(datatablesSimple);
-            }
-        });
-    </script>
-@endsection
-
 @section('title')
     <title>List Trashed Articles</title>
 @endsection
@@ -40,7 +20,15 @@
 @section('content')
     <div class="card mb-4">
         <div class="card-body">
-            <table id="datatablesSimple">
+            <form action="{{ route('articles.trash') }}" method="GET" class="mb-3">
+                <div class="input-group">
+                    <input type="text" name="search" class="form-control rounded-0" placeholder="Search by title or author's name" value="{{ request('search') }}">
+                    <div class="input-group-append">
+                        <button class="btn btn-primary rounded-0" type="submit">Search</button>
+                    </div>
+                </div>
+            </form>
+            <table class="table">
                 <thead>
                     <tr>
                         <th>Title</th>
@@ -97,6 +85,9 @@
                     @endforeach
                 </tbody>
             </table>
+            <div class="d-flex justify-content-center mt-4">
+                {{ $articles->withQueryString()->onEachSide(5)->links('pagination::bootstrap-4') }}
+            </div>
         </div>
     </div>
 @endsection
